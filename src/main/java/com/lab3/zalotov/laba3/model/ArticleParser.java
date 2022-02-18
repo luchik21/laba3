@@ -23,20 +23,19 @@ public class ArticleParser {
 
             for (int i = 0; i < articlesObject.length(); i++) {
                 JSONObject arrayElement = articlesObject.getJSONObject(i);
-                String source = arrayElement.optString("source");
-                JSONObject sourceName = arrayElement.getJSONObject("source");
-                String name = sourceName.getString("name");
+                JSONObject source = arrayElement.getJSONObject("source");
+                String sourceName = source.getString("name");
                 if (!arrayElement.isNull("author")) {
                     author = arrayElement.getString("author");
                 } else {
-                    author = name;
+                    author = sourceName;
                 }
                 String title = arrayElement.optString("title");
                 String description = arrayElement.optString("description");
                 String url = arrayElement.getString("url");
                 String urlToImage = arrayElement.optString("urlToImage");
                 String publishedAt = arrayElement.optString("publishedAt");
-                newsList.add(new Article(source, author, title, description, url, urlToImage, publishedAt));
+                newsList.add(new Article(sourceName, author, title, description, url, urlToImage, publishedAt));
             }
         } catch (JSONException e) {
             logger.error("Article parser error " + e.getMessage());

@@ -53,7 +53,7 @@ public class Laba3Application {
         executor.setMaxPoolSize(maxPoolSize);
         executor.setQueueCapacity(queueCapacity);
         executor.afterPropertiesSet();
-        logger.info("ThreadPoolTaskExecutor");
+        logger.info("Initialize taskExecutor");
         return executor;
     }
 }

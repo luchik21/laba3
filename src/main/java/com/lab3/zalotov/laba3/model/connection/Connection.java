@@ -7,5 +7,7 @@ import java.util.List;
 public interface Connection {
     List<Article> getNewsByCountry(String country);
 
+    List<Article> getNewsByCountryAndCategory(String country, String category);
+
     List<Article> getNewsByCategory(String category);
 }

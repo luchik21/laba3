@@ -35,5 +35,12 @@ public class GetNewsServiceImpl implements GetNewsService {
         logger.info("Call find by: " + country);
         return CompletableFuture.completedFuture(connection.getNewsByCountry(country));
     }
+
+    @Override
+    @Async("taskExecutor")
+    public CompletableFuture<List<Article>> findByCountryAndCategory(String country, String category) {
+        logger.info("Call find by: " + country + "/" + category);
+        return CompletableFuture.completedFuture(connection.getNewsByCountryAndCategory(country, category));
+    }
 }
 

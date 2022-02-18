@@ -10,4 +10,6 @@ public interface GetNewsService {
     CompletableFuture<List<Article>> findByCategory(String category);
 
     CompletableFuture<List<Article>> findByCountry(String country);
+
+    CompletableFuture<List<Article>> findByCountryAndCategory(String country, String category);
 }

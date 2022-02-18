@@ -96,4 +96,21 @@ public class ConnectionImpl implements Connection {
         }
         return null;
     }
+
+    @Override
+    public List<Article> getNewsByCountryAndCategory(String country, String category) {
+        try {
+            String urlString = urlSite.cloneBuilder().queryParam("country", country).queryParam("category", category).build().toString();//задаем url с параметрами
+            URL url = new URL(urlString);
+            HttpURLConnection connection = getConnection(url);//подключение
+            JSONObject jsonObject = new JSONObject(parseStream(connection.getInputStream()));//получение json объекта с информацией
+            if (jsonObject.has("Error")) {
+                return null;
+            }
+            return articleParser.articleParser(jsonObject);//вытягиваем новости в лист
+        } catch (IOException e) {
+            logger.error("Error in getNewsByCountryAndCategory: " + e.getMessage());
+        }
+        return null;
+    }
 }
