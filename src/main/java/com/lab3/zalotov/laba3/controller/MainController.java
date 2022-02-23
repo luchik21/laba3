@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
@@ -60,7 +61,7 @@ public class MainController {
 
     @RequestMapping("/findByCategory/{category}")
     public ResponseEntity<?> findNewsByCategory(@PathVariable String category) throws ExecutionException, InterruptedException {
-        logger.info("calling find by country:" + category);
+        logger.info("calling find by category:" + category);
         CompletableFuture<List<Article>> article = getNewsService.findByCategory(category);
         if (!article.get().isEmpty())
             return ResponseEntity.ok(article.get());
@@ -103,6 +104,33 @@ public class MainController {
         saveNewsService.POIDocumentCreate(article.get(), country + category);
         if (!article.get().isEmpty())
             return ResponseEntity.ok("Successfully create document for request " + country.toUpperCase() + "/" + category.toUpperCase());
+        return ResponseEntity.ok("Can't find news with parameters: " + country.toUpperCase() + "/" + category.toUpperCase() + " Look news with category:" + categoryHelp);
+    }
+
+    @RequestMapping("/rest/country/{country}")
+    public ResponseEntity<?> restReqCountry(@PathVariable String country) throws ExecutionException, InterruptedException, IOException {
+        logger.info("calling find by country:" + country);
+        CompletableFuture<String> article = getNewsService.findByCountryRest(country);
+        if (!article.get().isEmpty())
+            return ResponseEntity.ok(article.get());
+        return ResponseEntity.ok("Cant find news with parameter country: " + country);
+    }
+
+    @RequestMapping("/rest/category/{category}")
+    public ResponseEntity<?> restReqCategory(@PathVariable String category) throws ExecutionException, InterruptedException, IOException {
+        logger.info("calling find by category:" + category);
+        CompletableFuture<String> article = getNewsService.findByCategoryRest(category);
+        if (!article.get().isEmpty())
+            return ResponseEntity.ok(article.get());
+        return ResponseEntity.ok("Cant find news with parameter category: " + category);
+    }
+
+    @RequestMapping("/rest/country/{country}/category/{category}")
+    public ResponseEntity<?> restReqCountryAndCategory(@PathVariable String country, @PathVariable String category) throws ExecutionException, InterruptedException, IOException {
+        logger.info("calling rest country and category:" + country + "/" + category);
+        CompletableFuture<String> article = getNewsService.findByCountryAndCategoryRest(country, category);
+        if (!article.get().isEmpty())
+            return ResponseEntity.ok(article.get());
         return ResponseEntity.ok("Can't find news with parameters: " + country.toUpperCase() + "/" + category.toUpperCase() + " Look news with category:" + categoryHelp);
     }
 }

@@ -113,4 +113,28 @@ public class ConnectionImpl implements Connection {
         }
         return null;
     }
+
+    @Override
+    public String getNewsByCountryRest(String country) throws IOException {
+        String urlString = urlSite.cloneBuilder().queryParam("country", country).build().toString();//задаем строку для получения новостей с сайта
+        URL url = new URL(urlString);//вида ЮРЛ
+        HttpURLConnection connection = getConnection(url);
+        return parseStream(connection.getInputStream());
+    }
+
+    @Override
+    public String getNewsByCategoryRest(String category) throws IOException {
+        String urlString = urlSite.cloneBuilder().queryParam("category", category).build().toString();//задаем строку для получения новостей с сайта
+        URL url = new URL(urlString);//вида ЮРЛ
+        HttpURLConnection connection = getConnection(url);
+        return parseStream(connection.getInputStream());
+    }
+
+    @Override
+    public String getNewsByCountryAndCategoryRest(String country, String category) throws IOException {
+        String urlString = urlSite.cloneBuilder().queryParam("country", country).queryParam("category", category).build().toString();//задаем строку для получения новостей с сайта
+        URL url = new URL(urlString);//вида ЮРЛ
+        HttpURLConnection connection = getConnection(url);
+        return parseStream(connection.getInputStream());
+    }
 }

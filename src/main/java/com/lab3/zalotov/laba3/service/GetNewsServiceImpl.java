@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.*;
 
@@ -41,6 +42,25 @@ public class GetNewsServiceImpl implements GetNewsService {
     public CompletableFuture<List<Article>> findByCountryAndCategory(String country, String category) {
         logger.info("Call find by: " + country + "/" + category);
         return CompletableFuture.completedFuture(connection.getNewsByCountryAndCategory(country, category));
+    }
+
+    @Override
+    public CompletableFuture<String> findByCategoryRest(String category) throws IOException {
+        logger.info("Call find by: " + category);
+        return CompletableFuture.completedFuture(connection.getNewsByCategoryRest(category));
+    }
+
+    @Override
+    @Async("taskExecutor")
+    public CompletableFuture<String> findByCountryRest(String country) throws IOException {
+        logger.info("Call find by: " + country);
+        return CompletableFuture.completedFuture(connection.getNewsByCountryRest(country));
+    }
+
+    @Override
+    public CompletableFuture<String> findByCountryAndCategoryRest(String country, String category) throws IOException {
+        logger.info("Call find by: " + country + "/" + category);
+        return CompletableFuture.completedFuture(connection.getNewsByCountryAndCategoryRest(country, category));
     }
 }
 
